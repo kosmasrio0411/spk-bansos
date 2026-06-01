@@ -11,6 +11,84 @@ from streamlit_option_menu import option_menu
 st.set_page_config(page_title="GDSS Bansos", page_icon="📊", layout="wide")
 
 # ==========================================
+# LOGIN SEDERHANA BERBASIS ROLE
+# ==========================================
+USERS = {
+    "admin": {
+        "password": "admin123",
+        "role": "Admin/Operator",
+        "allowed_pages": ["Kelola Data Kandidat", "Papan Hasil Agregasi"]
+    },
+    "dinsos": {
+        "password": "dm1123",
+        "role": "DM1 Dinsos",
+        "allowed_pages": ["Panel DM1: Dinsos", "Papan Hasil Agregasi"]
+    },
+    "camat": {
+        "password": "dm2123",
+        "role": "DM2 Camat",
+        "allowed_pages": ["Panel DM2: Camat", "Papan Hasil Agregasi"]
+    }
+}
+
+def init_login_state():
+    if "logged_in" not in st.session_state:
+        st.session_state.logged_in = False
+    if "username" not in st.session_state:
+        st.session_state.username = ""
+    if "role" not in st.session_state:
+        st.session_state.role = ""
+    if "allowed_pages" not in st.session_state:
+        st.session_state.allowed_pages = []
+
+def login_page():
+    st.markdown("<h1 style='text-align:center;'>🔐 Login GDSS Bansos</h1>", unsafe_allow_html=True)
+    st.markdown("<p style='text-align:center;'>Silakan login sesuai peran pengguna.</p>", unsafe_allow_html=True)
+
+    col1, col2, col3 = st.columns([1, 1.2, 1])
+
+    with col2:
+        with st.form("login_form"):
+            username = st.text_input("Username")
+            password = st.text_input("Password", type="password")
+            login_button = st.form_submit_button("Login", use_container_width=True)
+
+            if login_button:
+                if username in USERS and password == USERS[username]["password"]:
+                    st.session_state.logged_in = True
+                    st.session_state.username = username
+                    st.session_state.role = USERS[username]["role"]
+                    st.session_state.allowed_pages = USERS[username]["allowed_pages"]
+                    st.success("Login berhasil!")
+                    st.rerun()
+                else:
+                    st.error("Username atau password salah.")
+
+    st.markdown("---")
+    st.info("""
+    Akun demo:
+    
+    **Admin**  
+    Username: `admin`  
+    Password: `admin123`
+    
+    **DM1 Dinsos**  
+    Username: `dinsos`  
+    Password: `dm1123`
+    
+    **DM2 Camat**  
+    Username: `camat`  
+    Password: `dm2123`
+    """)
+
+def logout():
+    st.session_state.logged_in = False
+    st.session_state.username = ""
+    st.session_state.role = ""
+    st.session_state.allowed_pages = []
+    st.rerun()
+
+# ==========================================
 # 1. INISIALISASI DATA & SESSION STATE
 # ==========================================
 kriteria_cols = ['C1_KK_Serumah','C2_Pendidikan','C3_Anggota_Kel','C4_Masih_Sekolah',
@@ -116,29 +194,52 @@ def simulasi_sensitivitas(matrix, tipe_benefit, bobot_base_dm1, bobot_base_dm2, 
     return hasil
 
 # ==========================================
+# CEK STATUS LOGIN
+# ==========================================
+init_login_state()
+
+if not st.session_state.logged_in:
+    login_page()
+    st.stop()
+
+# ==========================================
 # 3. NAVIGASI HALAMAN (OPTION MENU)
 # ==========================================
 with st.sidebar:
     st.markdown("<h2 style='text-align: center; color: #2c3e50;'>Sistem Bantuan Sosial</h2>", unsafe_allow_html=True)
     st.markdown("---")
-    
+
+    st.markdown(f"**Login sebagai:** `{st.session_state.username}`")
+    st.markdown(f"**Role:** `{st.session_state.role}`")
+
+    if st.button("Logout", use_container_width=True):
+        logout()
+
+    st.markdown("---")
+
+    icon_map = {
+        "Kelola Data Kandidat": "folder-fill",
+        "Panel DM1: Dinsos": "people-fill",
+        "Panel DM2: Camat": "person-fill",
+        "Papan Hasil Agregasi": "bar-chart-fill"
+    }
+
     halaman = option_menu(
         menu_title="Navigasi Utama",
-        options=["Kelola Data Kandidat", "Panel DM1: Dinsos", "Panel DM2: Camat", "Papan Hasil Agregasi"],
-        # Ikon Dinsos (berdua) dan Camat (tunggal) sudah disesuaikan
-        icons=["folder-fill", "people-fill", "person-fill", "bar-chart-fill"],
+        options=st.session_state.allowed_pages,
+        icons=[icon_map[p] for p in st.session_state.allowed_pages],
         menu_icon="cast",
         default_index=0,
         styles={
             "container": {"padding": "0!important", "background-color": "transparent"},
-            "icon": {"color": "gray", "font-size": "18px"}, 
+            "icon": {"color": "gray", "font-size": "18px"},
             "nav-link": {
-                "font-size": "15px", 
-                "text-align": "left", 
-                "margin":"5px", 
+                "font-size": "15px",
+                "text-align": "left",
+                "margin": "5px",
                 "--hover-color": "#e0e0e0"
             },
-            "nav-link-selected": {"background-color": "#2c3e50", "color": "white", "icon-color": "white"},
+            "nav-link-selected": {"background-color": "#2c3e50", "color": "white"},
         }
     )
 
