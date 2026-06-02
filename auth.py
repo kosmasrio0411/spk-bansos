@@ -27,17 +27,31 @@ USERS = {
 def _get_dummy_data() -> pd.DataFrame:
     """Mengembalikan data kandidat dummy untuk inisialisasi awal."""
     data_kandidat = {
-        'Nama': ['Budi Santoso', 'Siti Rahayu', 'Ahmad Fauzi', 'Dewi Lestari', 'Hendra Wijaya'],
-        'Desa': ['Ngemplak', 'Ngemplak', 'Tegalsari', 'Tegalsari', 'Purwosari'],
-        'C1_KK_Serumah':       [2, 1, 3, 1, 2],
-        'C2_Pendidikan':       [4, 3, 5, 2, 4],
-        'C3_Anggota_Kel':      [5, 3, 7, 2, 4],
-        'C4_Masih_Sekolah':    [2, 1, 3, 1, 2],
-        'C5_Pengeluaran':      [350, 500, 280, 600, 400],
-        'C6_Penghasilan':      [400, 600, 300, 700, 450],
-        'C7_Kondisi_Rumah':    [4, 2, 5, 2, 3],
-        'C8_Tanggungan_Khusus':[1, 0, 2, 0, 1],
-        'C9_Jarak_Fasilitas':  [2.5, 1.0, 4.0, 0.5, 3.0]
+        'Nama': [
+            'Budi Santoso', 'Siti Rahayu', 'Ahmad Fauzi', 'Dewi Lestari', 'Hendra Wijaya',
+            'Sumiati', 'Bambang Purnomo', 'Rina Kusuma', 'Joko Susilo', 'Murniati',
+            'Agus Setiawan', 'Tutik Handayani', 'Wahyu Nugroho', 'Sri Mulyani', 'Darmanto',
+            'Endang Sulistyo', 'Rudi Hartono', 'Fatimah', 'Suryo Atmojo', 'Lasmi',
+            'Prasetyo', 'Karyati', 'Dwi Cahyono', 'Suparni', 'Eko Widodo',
+            'Yanti Wulandari', 'Sugiyono', 'Marni', 'Tri Handoko', 'Winarti'
+        ],
+        'Desa': [
+            'Ngemplak', 'Ngemplak', 'Tegalsari', 'Tegalsari', 'Purwosari',
+            'Purwosari', 'Karanganyar', 'Karanganyar', 'Ngemplak', 'Tegalsari',
+            'Purwosari', 'Karanganyar', 'Ngemplak', 'Tegalsari', 'Purwosari',
+            'Karanganyar', 'Ngemplak', 'Tegalsari', 'Purwosari', 'Karanganyar',
+            'Ngemplak', 'Tegalsari', 'Purwosari', 'Karanganyar', 'Ngemplak',
+            'Tegalsari', 'Purwosari', 'Karanganyar', 'Ngemplak', 'Tegalsari'
+        ],
+        'C1_KK_Serumah':      [2,1,3,1,2, 1,3,2,1,2, 3,1,2,1,3, 2,1,2,3,1, 2,3,1,2,1, 3,2,1,2,3],
+        'C2_Pendidikan':      [4,3,5,2,4, 5,3,4,2,5, 4,3,5,2,4, 3,5,4,3,5, 4,3,5,4,3, 5,4,3,2,4],
+        'C3_Anggota_Kel':     [5,3,7,2,4, 6,5,3,2,7, 4,3,6,2,5, 4,7,3,5,6, 4,6,3,5,2, 7,4,3,5,6],
+        'C4_Masih_Sekolah':   [2,1,3,1,2, 3,2,1,0,4, 2,1,3,1,2, 2,4,1,2,3, 2,3,1,2,0, 4,2,1,2,3],
+        'C5_Pengeluaran':     [350,500,280,600,400, 250,450,550,650,200, 380,520,260,580,420, 480,220,560,340,190, 410,270,530,370,610, 210,440,590,320,240],
+        'C6_Penghasilan':     [400,600,300,700,450, 280,500,620,720,230, 420,580,280,640,470, 530,240,620,380,210, 460,290,590,410,680, 230,490,650,360,260],
+        'C7_Kondisi_Rumah':   [4,2,5,2,3, 5,3,2,1,5, 4,2,5,3,4, 3,5,2,4,5, 3,5,2,4,1, 5,3,2,4,5],
+        'C8_Tanggungan_Khusus':[1,0,2,0,1, 2,1,0,0,2, 1,0,2,0,1, 1,2,0,1,2, 1,2,0,1,0, 2,1,0,1,2],
+        'C9_Jarak_Fasilitas': [2.5,1.0,4.0,0.5,3.0, 5.0,2.0,1.5,0.8,6.0, 3.5,1.2,4.5,0.7,3.8, 2.2,5.5,1.8,2.8,6.5, 3.2,4.8,1.3,2.7,0.6, 6.2,2.5,1.7,3.1,5.8]
     }
     return pd.DataFrame(data_kandidat)
 

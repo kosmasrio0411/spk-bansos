@@ -183,7 +183,7 @@ def halaman_papan_hasil():
     ax1.bar(x - 0.17, skor_saw_v, 0.35, label='SAW', color='steelblue')
     ax1.bar(x + 0.17, skor_topsis_v, 0.35, label='TOPSIS', color='darkorange')
     ax1.set_xticks(x)
-    ax1.set_xticklabels([n.split()[0] for n in nama_sorted], rotation=45)
+    ax1.set_xticklabels([n.split()[0] for n in nama_sorted], rotation=45, fontsize=8)
     ax1.legend()
     st.pyplot(fig1)
 
@@ -193,7 +193,7 @@ def halaman_papan_hasil():
     colors = ['gold' if i < KUOTA else 'lightgray' for i in range(len(df_borda))]
     ax2.barh(range(len(df_borda)), df_borda['Total_Borda'].values, color=colors)
     ax2.set_yticks(range(len(df_borda)))
-    ax2.set_yticklabels([f"{r}. {n}" for r, n in zip(df_borda['Rank_Final'], df_borda['Nama'])])
+    ax2.set_yticklabels([f"{r}. {n}" for r, n in zip(df_borda['Rank_Final'], df_borda['Nama'])], fontsize=8)
     ax2.invert_yaxis()
     st.pyplot(fig2)
 
@@ -204,7 +204,7 @@ def halaman_papan_hasil():
     df_delta = df_borda.sort_values('Delta_Rank', ascending=False)
     ax3.barh(range(len(df_delta)), df_delta['Delta_Rank'].values, color='tomato')
     ax3.set_yticks(range(len(df_delta)))
-    ax3.set_yticklabels(df_delta['Nama'])
+    ax3.set_yticklabels(df_delta['Nama'], fontsize=8)
     ax3.invert_yaxis()
     ax3.axvline(x=2, color='black', linestyle='--', alpha=0.5, label='Batas Diskusi (>2)')
     ax3.legend()
