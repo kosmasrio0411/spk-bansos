@@ -11,7 +11,7 @@ KRITERIA_COLS = [
 ]
 
 # True = benefit (semakin besar semakin baik), False = cost (semakin kecil semakin baik)
-TIPE_BENEFIT = [True, False, True, True, False, False, False, True, False]
+TIPE_BENEFIT = [True, False, True, True, False, False, False, True, True]
 
 
 # ==========================================
