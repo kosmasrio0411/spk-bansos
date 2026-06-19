@@ -1,5 +1,28 @@
+# ============================================================
+# requirements.txt — GDSS Bansos
+# Deploy: Render (Socket Server) + Streamlit Cloud (App)
+# ============================================================
+
+# --- Streamlit Application ---
 streamlit
 streamlit-option-menu
-matplotlib
+streamlit-autorefresh
+
+# --- Socket.IO Server (Flask + Gevent) ---
+flask
+flask-socketio
+python-socketio
+python-engineio
+gevent
+gevent-websocket
+
+# --- Production WSGI Server untuk Render ---
+gunicorn
+
+# --- HTTP Client (Streamlit → Socket Server via REST) ---
+requests
+
+# --- Data Science ---
 pandas
 numpy
+matplotlib

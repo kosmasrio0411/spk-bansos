@@ -1,7 +1,22 @@
 import streamlit as st
 from streamlit_option_menu import option_menu
 
+# ==============================================================================
+# 1. SHARED STORAGE (MEMORI BERSAMA ANTAR-TAB & ANTAR-USER)
+# Didelegasikan ke shared_store.py agar satu instance cache_resource digunakan
+# secara konsisten oleh seluruh modul (components.py, app.py, dsb.).
+# ==============================================================================
+from shared_store import get_shared_data
+
+# ==============================================================================
+# 2. AUTENTIKASI — Didelegasikan ke auth.py
+# ==============================================================================
 from auth import init_session_state, login_page, logout
+
+# ==============================================================================
+# 3. HALAMAN-HALAMAN APLIKASI
+# Didelegasikan ke components.py agar menggunakan shared_store real-time.
+# ==============================================================================
 from components import (
     halaman_kelola_data,
     halaman_panel_preferensi,
@@ -9,7 +24,7 @@ from components import (
 )
 
 # ==========================================
-# KONFIGURASI HALAMAN (harus paling atas)
+# KONFIGURASI HALAMAN (Harus paling atas)
 # ==========================================
 st.set_page_config(
     page_title="GDSS Bansos",
@@ -18,14 +33,10 @@ st.set_page_config(
     initial_sidebar_state="expanded",
 )
 
-# ==========================================
-# INISIALISASI SESSION STATE
-# ==========================================
+# Inisialisasi Session State
 init_session_state()
 
-# ==========================================
-# CEK STATUS LOGIN
-# ==========================================
+# Cek Status Login
 if not st.session_state.logged_in:
     login_page()
     st.stop()

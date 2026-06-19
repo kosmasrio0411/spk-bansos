@@ -28,42 +28,59 @@ Aplikasi ini menggunakan kombinasi tiga metode pengambilan keputusan:
 
 ## 🛠️ Prasyarat (*Dependencies*)
 
-Pastikan komputer/laptop yang digunakan sudah terinstal **Python** (disarankan versi 3.8 atau lebih baru).
+Pastikan komputer/laptop yang digunakan sudah terinstal **Python** (disarankan versi 3.9 atau lebih baru). Aplikasi ini sekarang menggunakan arsitektur **WebSocket (Socket.IO)** untuk sinkronisasi *real-time* yang mulus antar-tab tanpa perlu me-refresh halaman secara manual.
 
 ---
 
 ## 🚀 Cara Instalasi dan Menjalankan Aplikasi
 
-**Langkah 1: Siapkan File Proyek**
-Buat folder baru untuk proyek ini, lalu simpan kode sumber aplikasi ke dalam file bernama `app.py`. Buka Terminal atau Command Prompt (CMD) dan arahkan ke folder tersebut.
+Aplikasi ini berjalan dengan dua servis yang saling terhubung: **Socket Server** (sebagai *backend* sinkronisasi) dan **Streamlit App** (sebagai *frontend/client*).
 
-**Langkah 2: Instal Library**
-Jalankan perintah berikut di Terminal/CMD untuk menginstal semua kebutuhan aplikasi secara global:
+**Langkah 1: Instal Library (Satu kali saja)**
+Buka Terminal atau Command Prompt (CMD) di folder proyek ini, lalu instal semua dependensi melalui `requirements.txt`:
 
 ```bash
-pip install streamlit streamlit-option-menu matplotlib
-
+pip install -r requirements.txt
 ```
 
-*(Tunggu hingga proses unduhan dan instalasi selesai 100%)*
+*(Tunggu hingga proses instalasi Flask-SocketIO, gevent, Streamlit, dsb selesai)*
 
-**Langkah 3: Jalankan Aplikasi**
-Setelah instalasi selesai, jalankan perintah ini untuk membuka aplikasi:
+**Langkah 2: Jalankan Socket Server (Terminal 1)**
+Sistem GDSS membutuhkan server komunikasi agar tab Dinsos dan Camat bisa saling mengirim bobot secara *real-time*. Di terminal pertama, jalankan:
+
+```bash
+python socket_server.py
+```
+*(Biarkan terminal ini tetap terbuka dan berjalan)*
+
+**Langkah 3: Jalankan Aplikasi Streamlit (Terminal 2)**
+Buka **terminal baru** (biarkan terminal pertama tetap jalan), arahkan ke folder proyek, dan jalankan:
 
 ```bash
 streamlit run app.py
-
 ```
 
-Aplikasi akan otomatis terbuka di *browser* Anda (biasanya di alamat `http://localhost:8501`).
+Aplikasi akan otomatis terbuka di *browser* Anda (biasanya di `http://localhost:8501`).
+
+---
+
+## 🔐 Akun Login Demo
+
+Aplikasi menggunakan sistem autentikasi multi-peran. Gunakan kredensial berikut untuk masuk:
+
+| Peran (*Role*) | Username | Password | Akses Halaman |
+|---|---|---|---|
+| **Administrator** | `admin` | `admin123` | Kelola Data, Papan Hasil |
+| **Kepala Dinsos** (DM1) | `dinsos` | `dinsos123` | Panel DM1 (SAW), Papan Hasil |
+| **Camat** (DM2) | `camat` | `camat123` | Panel DM2 (TOPSIS), Papan Hasil |
 
 ---
 
 ## 📂 Struktur Navigasi Aplikasi
 
-Aplikasi ini dibagi menjadi 4 halaman utama:
+Setelah login, pengguna hanya akan melihat halaman sesuai hak aksesnya:
 
-1. **Kelola Data Kandidat**: Tempat Admin/Operator menentukan kuota bantuan dan mengedit data calon penerima bansos beserta nilai kriterianya.
-2. **Panel DM1 (Dinsos)**: Halaman khusus Kepala Dinas Sosial untuk mengatur preferensi bobot kriterianya (dihitung menggunakan SAW).
-3. **Panel DM2 (Camat)**: Halaman khusus Camat untuk mengatur preferensi bobot kriterianya (dihitung menggunakan TOPSIS).
-4. **Papan Hasil Agregasi**: Halaman final yang menampilkan hasil agregasi Borda, peringkat individu tiap DM, beserta grafik analisis visual.
+1. **Kelola Data Kandidat**: (Hanya Admin) Tempat menentukan kuota dan mengedit data calon penerima bansos.
+2. **Panel DM1 (Dinsos)**: (Hanya Dinsos) Tempat mengatur preferensi bobot dengan slider (SAW). Punya tombol *🚀 Kirim & Sinkronkan Bobot*.
+3. **Panel DM2 (Camat)**: (Hanya Camat) Tempat mengatur preferensi bobot dengan slider (TOPSIS). Punya tombol *🚀 Kirim & Sinkronkan Bobot*.
+4. **Papan Hasil Agregasi**: (Semua Role) Halaman final yang menampilkan hasil agregasi Borda secara **Live/Real-time**. Jika DM1/DM2 menekan tombol sinkronisasi di tab/komputer mereka, grafik di halaman ini akan *update* secara otomatis tanpa perlu *refresh* browser.
